@@ -112,11 +112,17 @@ char8 *write_integer(T value, char8 *out) {
   constexpr const char *format =
       std::is_same_v<T, int>
           ? "%d"
-          : std::is_same_v<T, unsigned>
-                ? "%u"
-                : std::is_same_v<T, unsigned long>
-                      ? "%lu"
-                      : std::is_same_v<T, unsigned long long> ? "%llu" : "";
+          : std::is_same_v<T, long>
+                ? "%ld"
+                : std::is_same_v<T, long long>
+                      ? "%lld"
+                      : std::is_same_v<T, unsigned>
+                            ? "%u"
+                            : std::is_same_v<T, unsigned long>
+                                  ? "%lu"
+                                  : std::is_same_v<T, unsigned long long>
+                                        ? "%llu"
+                                        : "";
   static_assert(*format != '\0', "Unsupported integer type");
 
   int rc = std::snprintf(buffer, buffer_size, format, value);
@@ -135,5 +141,10 @@ char8 *write_integer(T value, char8 *out) {
 #endif
 
 template char8 *write_integer<int>(int, char8 *out);
-template char8 *write_integer<std::size_t>(std::size_t, char8 *out);
+template char8 *write_integer<long>(long, char8 *out);
+template char8 *write_integer<long long>(long long, char8 *out);
+template char8 *write_integer<unsigned>(unsigned, char8 *out);
+template char8 *write_integer<unsigned long>(unsigned long, char8 *out);
+template char8 *write_integer<unsigned long long>(unsigned long long,
+                                                  char8 *out);
 }
